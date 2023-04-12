@@ -11,7 +11,7 @@ import {
 } from 'react-icons/gr'
 
 export const getDefaultDocumentNode = (props) => {
-  if (props.schemaType === 'post') {
+  if (['post', 'page'].includes(props.schemaType)) {
     return S.document().views(I18nS.getDocumentNodeViewsForSchemaType(props.schemaType));
   }
   return S.document();
@@ -60,6 +60,23 @@ export default () =>
                     .canHandleIntent((_name, params, _context) => {
                       // Assume we can handle all intents (actions) regarding post documents
                       return params.type === 'post'
+                    })
+                ),
+              S.listItem()
+                .title('Page')
+                .id('page-docs')
+                .icon(PostIcon)
+                .schemaType('page')
+                .child(
+                  S.documentList()
+                    .id('page')
+                    .title('Pages')
+                    // Use a GROQ filter to get documents.
+                    .filter('_type == "page" && (!defined(_lang) || _lang == $baseLang)')
+                    .params({ baseLang: i18n.base })
+                    .canHandleIntent((_name, params, _context) => {
+                      // Assume we can handle all intents (actions) regarding page documents
+                      return params.type === 'page'
                     })
                 )
             ]

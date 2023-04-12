@@ -8,6 +8,9 @@ import article from './documents/article'
 import author from './documents/author'
 import post from './documents/post'
 import { translateFields } from './fieldTranslation'
+import page from "./documents/page"
+import hero from "./objects/hero"
+import herocopy from "./objects/herocopy"
 
 export default createSchema({
   name: 'default',
@@ -19,7 +22,10 @@ export default createSchema({
       richText,
       openGraph,
       captionImage,
-      post
+      hero,
+      herocopy,
+      post,
+      page
     ])
     // Include documents with field translation support.
     // This changes their structure, transforming
@@ -33,6 +39,6 @@ export default createSchema({
     // not be changed.
     .concat(translateFields([
       article,
-      author
+      author,
     ]))
 })
